@@ -166,7 +166,15 @@
   const MEXICO_UTC_OFFSET_HOURS = -6;
 
 function nextUnlockUTC() {
-  return new Date(Date.now() + 10000); // SOLO PARA PROBAR — borrar después
+  const now = new Date();
+  const hourUTC = -MEXICO_UTC_OFFSET_HOURS; // 6
+  let year = now.getUTCFullYear();
+  let month = now.getUTCMonth();
+  let target = new Date(Date.UTC(year, month, 25, hourUTC, 0, 0, 0));
+  if (now.getTime() >= target.getTime()) {
+    target = new Date(Date.UTC(year, month + 1, 25, hourUTC, 0, 0, 0));
+  }
+  return target;
 }
 
   const waitingEl = document.getElementById('waiting');
