@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Epílogo · Nuestro 25</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700&family=Nunito:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,600;1,500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Paleta 100% enfocada en morados, lilas y lavandas */
+    --bg-night: #0B0D17; 
+    --bg-night-2: #171226;
+    --purple: #9D88D5; 
+    --purple-soft: rgba(157,136,213,0.15);
+    --accent-light: #EBD9FF; 
+    --accent-glow: #B999FF;
+    --text-light: #FDFBF7; 
+    --text-muted: #B4A9C8;
+  }
+  
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+    background: radial-gradient(ellipse 120% 60% at 50% 0%, var(--bg-night-2) 0%, var(--bg-night) 55%, #06050A 100%);
+    color: var(--text-light); 
+    font-family: 'Nunito', sans-serif;
+    -webkit-tap-highlight-color: transparent; 
+    overflow-x: hidden; 
+    position: relative;
+    transition: background 1.2s ease;
+  }
+
+  /* Fondo Estrellado y Nebulosa */
+  #bg-stars { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+  .bgstar { position: absolute; background: var(--text-light); border-radius: 50%; opacity: .5; animation: tw 4s ease-in-out infinite; }
+  @keyframes tw { 0%, 100% { opacity: .15; transform: scale(.7) } 50% { opacity: .85; transform: scale(1.3) } }
+  
+  .mist { position: fixed; z-index: 0; pointer-events: none; border-radius: 50%; filter: blur(70px); opacity: .25; }
+  .mist.purple { background: #7A5CFF; width: 300px; height: 300px; top: -80px; right: -80px; }
+  .mist.pink { background: #D588D5; width: 250px; height: 250px; bottom: 10%; left: -80px; opacity: .15; }
+
+  #app { max-width: 480px; margin: 0 auto; min-height: 100vh; position: relative; z-index: 1; padding: 4rem 1.6rem 6rem; }
+
+  section { margin-bottom: 5.5rem; }
+  .reveal { opacity: 0; transform: translateY(26px); transition: all 1s ease-out; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* Tipografías y Títulos */
+  .eyebrow { font-size: .7rem; letter-spacing: 4px; text-transform: uppercase; color: var(--accent-glow); font-weight: 700; text-align: center; margin-bottom: 1rem; }
+  h1 { font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 2rem; text-align: center; margin-bottom: .5rem; text-shadow: 0 0 15px rgba(185,153,255,0.3); }
+  .sub { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1rem; color: var(--text-muted); text-align: center; margin-bottom: 1.5rem; }
+
+  /* Línea de tiempo (Recap) */
+  .recap-track { display: flex; flex-direction: column; gap: 16px; margin-top: 2.5rem; }
+  .recap-row { display: flex; align-items: center; gap: 16px; }
+  .recap-dot {
+    width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0;
+    background: radial-gradient(circle at 30% 30%, #FFFFFF, var(--accent-glow) 70%, #7A5CFF);
+    display: flex; align-items: center; justify-content: center;
+    font-size: .75rem; font-weight: 700; color: #171226;
+    box-shadow: 0 0 12px rgba(185,153,255,0.4);
+  }
+  .recap-line { flex: 1; height: 1px; background: linear-gradient(90deg, rgba(185,153,255,.5), transparent); }
+  .recap-word { font-family: 'Nunito', sans-serif; font-weight: 600; font-size: 1rem; color: var(--text-light); min-width: 110px; text-align: right; }
+
+  /* ---- 100 razones ---- */
+  .reasons-wrap {
+    border: 1px solid rgba(185,153,255,0.25); border-radius: 24px;
+    padding: 2.5rem 1.5rem; 
+    background: rgba(255,255,255,0.03); 
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    position: relative;
+    overflow: hidden;
+  }
+  .reasons-wrap::before { content: ''; position: absolute; top: -50px; left: -50px; width: 100px; height: 100px; background: var(--accent-glow); filter: blur(50px); opacity: 0.3; }
+  
+  .reasons-icon { text-align: center; font-size: 2.2rem; margin-bottom: .6rem; }
+  .reasons-title { font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 1.4rem; text-align: center; margin-bottom: .3rem; color: var(--accent-light); }
+  .reasons-sub { text-align: center; font-size: .85rem; color: var(--text-muted); margin-bottom: 1.8rem; }
+  
+  .reasons-toggle {
+    display: flex; align-items: center; justify-content: center; gap: .6rem;
+    margin: 0 auto; padding: .85rem 1.8rem; border-radius: 999px; cursor: pointer;
+    border: 1px solid rgba(185,153,255,0.5); 
+    background: linear-gradient(135deg, rgba(185,153,255,0.1), rgba(122,92,255,0.1));
+    font-size: .85rem; letter-spacing: .5px; color: var(--accent-light); font-weight: 700;
+    width: max-content;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(122,92,255,0.2);
+  }
+  .reasons-toggle:active { transform: scale(.95); }
+  .reasons-toggle:hover { background: rgba(185,153,255,0.2); }
+
+  /* ---- Modal de 100 Razones ---- */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(11, 13, 23, 0.7); backdrop-filter: blur(12px);
+    z-index: 100; display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: auto; }
+  
+  .modal-content {
+    background: linear-gradient(160deg, #241C38, #130E1F);
+    border: 1px solid rgba(185,153,255,0.3); border-radius: 24px;
+    width: 90%; max-width: 420px; height: 75vh;
+    padding: 2rem 1.2rem; display: flex; flex-direction: column;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+    transform: translateY(30px) scale(0.95); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  .modal-overlay.open .modal-content { transform: translateY(0) scale(1); }
+  
+  .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding: 0 0.5rem; }
+  .modal-header h2 { font-family: 'Baloo 2', sans-serif; color: var(--accent-light); font-size: 1.5rem; margin: 0; }
+  .modal-close { 
+    background: rgba(255,255,255,0.05); border: none; color: var(--text-light); 
+    width: 32px; height: 32px; border-radius: 50%; font-size: 1.2rem; 
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: background 0.3s;
+  }
+  .modal-close:hover { background: rgba(255,255,255,0.15); }
+  
+  .modal-body { overflow-y: auto; padding-right: 0.8rem; display: flex; flex-direction: column; gap: 12px; }
+  .modal-body::-webkit-scrollbar { width: 5px; }
+  .modal-body::-webkit-scrollbar-thumb { background: rgba(185,153,255,0.4); border-radius: 10px; }
+  .modal-body::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); }
+
+  .note {
+    background: rgba(185,153,255,0.06); border: 1px solid rgba(185,153,255,0.15);
+    border-radius: 16px; padding: 1rem 1.2rem; font-size: .95rem; line-height: 1.5;
+    opacity: 0; transform: translateY(15px);
+  }
+  .modal-overlay.open .note { animation: noteIn 0.5s ease forwards; }
+  @keyframes noteIn { to { opacity: 1; transform: translateY(0); } }
+  .note b { color: var(--accent-glow); margin-right: .4rem; font-size: 1.05rem; }
+
+  /* ---- Regalo ---- */
+  .gift-box {
+    border: 1px dashed rgba(185,153,255,0.5); border-radius: 20px;
+    padding: 2.5rem 1.5rem; text-align: center; position: relative;
+    background: linear-gradient(180deg, rgba(255,255,255,0.01) 0%, rgba(185,153,255,0.05) 100%);
+    cursor: pointer; transition: all 0.3s ease;
+  }
+  .gift-box:hover { border-color: rgba(185,153,255,0.8); background: rgba(185,153,255,0.08); }
+  .gift-icon { font-size: 3rem; margin-bottom: 1rem; transition: transform .4s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: inline-block; }
+  .gift-box:active .gift-icon { transform: scale(1.2) rotate(-8deg); }
+  .gift-title { font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 1.3rem; margin-bottom: .5rem; color: var(--accent-light); }
+  .gift-hint { font-size: .8rem; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  
+  .gift-reveal {
+    display: none; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px dashed rgba(185,153,255,.3);
+    text-align: center; font-size: 1rem; line-height: 1.7; color: var(--text-light);
+  }
+  .gift-reveal.show { display: block; animation: fadeInSlow 1s ease; }
+
+  /* ---- Escena de cierre ---- */
+  #closing-scene {
+    position: fixed; inset: 0; z-index: 60; display: none;
+    background: #020104; align-items: center; justify-content: center; flex-direction: column;
+    transition: opacity 1.4s ease;
+  }
+  #closing-scene.open { display: flex; }
+  .closing-line {
+    font-family: 'Baloo 2', sans-serif; font-weight: 600; color: var(--text-light);
+    font-size: 1.2rem; text-align: center; opacity: 0; margin-bottom: .6rem;
+  }
+  .lone-star {
+    width: 18px; height: 18px; border-radius: 50%; background: #fdf6ff;
+    box-shadow: 0 0 25px 8px rgba(219,191,255,.6);
+    margin-top: 2.5rem; cursor: pointer; opacity: 0;
+    animation: starBreathe 2.5s ease-in-out infinite;
+  }
+  @keyframes starBreathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.35); } }
+  .final-msg { max-width: 340px; text-align: center; padding: 0 1.5rem; margin-top: 2.5rem; display: none; }
+  .final-msg.show { display: block; }
+  .final-msg p {
+    font-family: 'Baloo 2', sans-serif; font-weight: 500; font-size: 1.2rem; line-height: 2.2;
+    color: #EBD9FF; opacity: 0; animation: lineIn 1.2s ease forwards;
+    text-shadow: 0 0 10px rgba(219,191,255,0.3);
+  }
+  
+  @keyframes lineIn { to { opacity: 1; } }
+  @keyframes fadeInSlow { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+  audio { display: none; }
+</style>
+</head>
+<body>
+
+<div id="bg-stars"></div>
+<div class="mist purple"></div>
+<div class="mist pink"></div>
+
+<audio id="audio-harvey" src="/musica/harvey.mp3" preload="auto" autoplay loop></audio>
+
+<div id="app">
+
+  <section class="reveal">
+    <div class="eyebrow">✧ bonus especial ✧</div>
+    <h1>9 meses juntos</h1>
+    <div class="sub">Un pequeño viaje por todo lo que hemos vivido ⋆</div>
+    <div class="recap-track" id="recapTrack"></div>
+  </section>
+
+  <section class="reveal">
+    <div class="reasons-wrap">
+      <div class="reasons-icon">🌌</div>
+      <div class="reasons-title">100 razones</div>
+      <div class="reasons-sub">por las que eres mi persona favorita</div>
+      <div class="reasons-toggle" onclick="openModal()">
+        <span>Ver las 100 razones</span>
+        <span class="arrow">✦</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="gift-box" onclick="openGift()">
+      <div class="gift-icon" id="giftIcon">🎁</div>
+      <div class="gift-title">Tu regalo final ✧</div>
+      <div class="gift-hint">toca para abrirlo</div>
+      <div class="gift-reveal" id="giftReveal">
+        No es nada material, pero es lo más real que tengo para darte:<br><br>
+        <i>Te regalo seguir eligiéndote como mi persona favorita cada 25, sin importar la distancia ni el tiempo que pase.</i> 🍇🤍
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal" style="text-align: center; margin-top: 2rem;">
+    <p style="font-family:'Baloo 2', sans-serif; font-weight: 600; font-size: 1.4rem; color: var(--accent-light);">Y recuerda... esto apenas comienza 🤍</p>
+    <div class="trigger-final" style="margin-top:2.5rem; cursor:pointer; display:inline-block;" onclick="startClosing()">
+      <div style="font-size:.8rem; color:var(--text-muted); letter-spacing:2px; text-transform: uppercase; border-bottom: 1px solid rgba(185,153,255,0.4); padding-bottom: 4px;">toca aquí para terminar</div>
+    </div>
+  </section>
+
+</div>
+
+<!-- MODAL PARA LAS 100 RAZONES -->
+<div id="reasonsModal" class="modal-overlay">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>100 Razones ✧</h2>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-body" id="notesStack">
+      <!-- Las notas se inyectan aquí con JS -->
+    </div>
+  </div>
+</div>
+
+<div id="closing-scene">
+  <div class="closing-line" id="closingLine"></div>
+  <div class="lone-star" id="loneStar" onclick="revealFinalMessage()"></div>
+  <div class="final-msg" id="finalMsg">
+    <p style="animation-delay:.1s">Gracias por aparecer.</p>
+    <p style="animation-delay:1.3s">No sé cuánto dure la vida.</p>
+    <p style="animation-delay:2.5s">Pero sí sé</p>
+    <p style="animation-delay:3.3s">que conocerte</p>
+    <p style="animation-delay:4.1s">fue una de las mejores cosas</p>
+    <p style="animation-delay:4.9s">que me pasaron. 🤍</p>
+  </div>
+</div>
+
+<script>
+  // Crear estrellas de fondo
+  const bgStars = document.getElementById('bg-stars');
+  for(let i=0; i<60; i++) {
+    const s = document.createElement('div'); 
+    s.className = 'bgstar';
+    const size = Math.random() * 2.5 + 1;
+    s.style.width = size + 'px'; 
+    s.style.height = size + 'px';
+    s.style.left = Math.random() * 100 + '%'; 
+    s.style.top = Math.random() * 100 + '%';
+    s.style.animationDelay = (Math.random() * 4) + 's';
+    bgStars.appendChild(s);
+  }
+
+  // Generar línea de tiempo
+  const recap = ["El inicio 🌱", "Puras risas 😂", "Confianza", "Cómplices", "Trasnochadas", "Seguimos ahí", "Cariño real", "Cercanía", "El 9 🍇"];
+  const track = document.getElementById('recapTrack');
+  recap.forEach((word, i) => {
+    const row = document.createElement('div');
+    row.className = 'recap-row';
+    row.innerHTML = `<div class="recap-dot">${i+1}</div><div class="recap-line"></div><div class="recap-word">${word}</div>`;
+    track.appendChild(row);
+  });
+
+// Razones especiales escritas a mano.
+// Estas aparecerán tal cual, sin modificaciones.
+const handpicked = [
+  "porque las amanecidas hablando contigo se sienten cortas aunque duren horas",
+  "porque en Roblox hasta perdiendo la pasamos bien",
+  "porque tienes las ocurrencias más random del mundo y me matas de risa",
+  "porque me cuentas de tus BL's con una emoción que me encanta ver",
+  "porque nunca me has hecho sentir juzgado por nada",
+  "porque estuviste ahí cuando más lo necesitaba, sin dudarlo",
+  "porque tenemos apodos que nadie más entendería jaja",
+  "porque aunque no nos hayamos visto, a veces se siente como si sí",
+  "porque tus buenos días por chat me alegran el día",
+  "porque me escuchas con completa sinceridad y atención",
+  "porque nunca se siente forzado hablar contigo",
+  "porque sabes cuándo me ocurre algo y me preguntas sin que te lo diga",
+  "porque siempre encuentras la forma de hacerme reír en un mal día",
+  "porque la distancia no ha hecho que esto se sienta menos real",
+  "porque compartimos hasta las cosas más tontas de nuestro día",
+  "porque confías en mí para contarme tus cosas importantes",
+  "porque siempre terminamos volviendo a nuestras charlas random de la nada",
+  "porque nunca te cansas de mis mensajes larguísimos",
+  "porque me haces sentir escuchado de verdad",
+  "porque tu forma de ser tan tú es una de las cosas que más quiero"
+];
+
+
+// En vez de combinar palabras sueltas, usamos frases completas.
+// Así ninguna razón sale gramaticalmente rara.
+const razonesExtra = [
+
+  // ──────────────
+  // NUESTRAS CHARLAS
+  // ──────────────
+
+  "porque podemos empezar hablando de algo serio y terminar diciendo cualquier tontería",
+  "porque contigo nunca sé hacia dónde va a terminar una conversación y me encanta",
+  "porque podemos hablar durante horas y aun así siempre queda algo más que contar",
+  "porque nuestras conversaciones de noche tienen algo que las hace diferentes",
+  "porque hablar contigo hasta tarde hace que se me olvide mirar la hora",
+  "porque incluso hablar de absolutamente nada contigo termina siendo entretenido",
+  "porque una conversación pequeña contigo puede terminar durando horas",
+  "porque contigo puedo pasar de contarte algo importante a decir la cosa más random del mundo",
+  "porque hay conversaciones nuestras que todavía recuerdo con muchísimo cariño",
+  "porque nunca necesito pensar demasiado qué decirte para que podamos seguir hablando",
+  "porque después de tantos meses todavía encontramos cosas nuevas de las que hablar",
+  "porque muchas veces digo que ya debería dormir y termino quedándome un rato más hablando contigo",
+
+
+  // ──────────────
+  // CONFIANZA
+  // ──────────────
+
+  "porque puedo contarte algo personal y sé que lo vas a escuchar de verdad",
+  "porque me has dejado conocer partes de ti que sé que no le muestras a cualquiera",
+  "porque confías en mí para contarme cuando algo te preocupa",
+  "porque contigo puedo admitir que tuve un mal día sin tener que fingir que estoy bien",
+  "porque nunca siento que tenga que esconder una parte de mí cuando hablamos",
+  "porque puedo decirte algo que me preocupa sin miedo a que lo tomes a la ligera",
+  "porque me gusta saber que también recurres a mí cuando necesitas contar algo",
+  "porque construimos una confianza enorme sin siquiera habernos visto todavía",
+  "porque sé que puedo contarte algo importante y va a quedarse entre nosotros",
+  "porque haces que confiar en alguien desde tan lejos parezca fácil",
+  "porque me haces sentir que las cosas que te cuento realmente te importan",
+  "porque contigo puedo ser sensible sin sentir que tengo que disimularlo",
+
+
+  // ──────────────
+  // LA DISTANCIA
+  // ──────────────
+
+  "porque conseguiste sentirte cerca estando literalmente a kilómetros de mí",
+  "porque demostramos que no hace falta estar en el mismo lugar para crear recuerdos bonitos",
+  "porque aunque todo haya sido a través de una pantalla, nunca lo he sentido menos importante",
+  "porque hiciste que una amistad virtual pudiera sentirse muchísimo más cercana de lo que imaginaba",
+  "porque tenemos tantos recuerdos juntos aunque todavía nos falte el primero estando frente a frente",
+  "porque algún día podremos recordar todas estas conversaciones estando por fin en el mismo lugar",
+  "porque la distancia podrá impedir un abrazo, pero nunca todas las horas que hemos compartido",
+  "porque todavía me parece bonito pensar que alguien tan lejos terminó siendo tan cercana para mí",
+  "porque nunca necesité tenerte enfrente para saber lo importante que eres para mí",
+  "porque eres la prueba de que la distancia no decide qué tan cercana puede volverse una persona",
+
+
+  // ──────────────
+  // ELLA
+  // ──────────────
+
+  "porque escucharte emocionarte por algo que te gusta hace que yo también termine sonriendo",
+  "porque tienes una forma muy tuya de contar las cosas y podría escucharte durante horas",
+  "porque tus momentos random ya forman parte de mis días favoritos",
+  "porque tienes ocurrencias que todavía no entiendo cómo se te pasan por la cabeza jsjs",
+  "porque me gusta conocer cada vez un poquito más de todas esas cosas que te hacen ser tú",
+  "porque incluso tus pequeñas costumbres terminaron volviéndose familiares para mí",
+  "porque hay cosas que veo durante el día y automáticamente pienso que tendría que contártelas",
+  "porque hay cosas que ahora me recuerdan a ti sin que siquiera lo intente",
+  "porque tu emoción cuando hablas de algo que amas es demasiado contagiosa",
+  "porque hasta cuando dices alguna tontería consigues alegrarme un poquito el día",
+  "porque nunca intentas ser alguien diferente conmigo",
+  "porque eres genuinamente una de las personas más particulares que he tenido la suerte de conocer",
+
+
+  // ──────────────
+  // PEQUEÑAS COSAS
+  // ──────────────
+
+  "porque un mensaje tuyo puede mejorar una parte aburrida de mi día",
+  "porque me gusta cuando apareces de la nada simplemente para contarme cualquier cosa",
+  "porque podemos compartir algo completamente insignificante y aun así termina importándome",
+  "porque nuestras bromas internas probablemente no tendrían ningún sentido para otra persona",
+  "porque algunos de nuestros mejores momentos empezaron con un mensaje completamente random",
+  "porque hasta las cosas pequeñas terminan teniendo un recuerdo tuyo detrás",
+  "porque me gusta saber cómo estuvo tu día incluso cuando según tú no pasó nada interesante",
+  "porque me gusta poder contarte algo apenas sucede simplemente porque quería que tú lo supieras",
+  "porque entre nosotros hasta una conversación absurda puede terminar convirtiéndose en un recuerdo",
+  "porque hay pequeños detalles tuyos que probablemente tú ni notas y yo ya aprendí a reconocer",
+
+
+  // ──────────────
+  // LO QUE SIGNIFICA PARA MÍ
+  // ──────────────
+
+  "porque entre tantas personas terminaste convirtiéndote en alguien demasiado importante para mí",
+  "porque nunca pensé que una persona que conocí por internet terminaría significando tanto",
+  "porque estos meses contigo me dejaron recuerdos que quiero conservar durante muchísimo tiempo",
+  "porque tenerte en mi vida se convirtió en algo que valoro más de lo que suelo decir",
+  "porque me alegra muchísimo que entre tantas casualidades termináramos coincidiendo",
+  "porque si pudiera volver al día en que nos conocimos, volvería a hablarte sin pensarlo",
+  "porque conocerte terminó siendo una de esas casualidades que agradezco muchísimo",
+  "porque ocupaste un lugar en mi vida sin que ninguno de los dos lo planeara",
+  "porque después de todo este tiempo todavía me alegra ver una notificación tuya",
+  "porque contigo entendí que alguien puede volverse importante sin importar cómo ni dónde lo conociste",
+  "porque de alguna manera terminaste formando parte de muchísimos de mis días",
+  "porque hay recuerdos que no serían ni la mitad de bonitos si tú no estuvieras en ellos",
+
+
+  // ──────────────
+  // LOS 25 💜
+  // ──────────────
+
+  "porque cada 25 me recuerda que ya pasó otro mes teniendo la suerte de conocerte",
+  "porque nuestra pequeña tradición del 25 terminó significando muchísimo para mí",
+  "porque me encanta tener una excusa cada mes para recordarte lo mucho que te quiero",
+  "porque llevamos tantos 25 y todavía encuentro cosas nuevas que agradecerte",
+  "porque cada mes tengo que inventarme algo nuevo y, de alguna manera, sigues haciendo que valga la pena jsjs",
+  "porque otro 25 significa otro mes lleno de conversaciones, tonterías y recuerdos contigo",
+  "porque espero que todavía nos queden muchísimos 25 por celebrar",
+  "porque nueve meses después todavía tengo razones de sobra para seguir escribiendo esta lista",
+  "porque esta tradición existe simplemente porque nuestra amistad merece ser celebrada",
+  "porque llega otro 25 y, para sorpresa de absolutamente nadie, sigues siendo mi persona favorita",
+  "porque eres tú y eso es suficiente para que todo esto valga la pena",
+  "porque dia a dia me demuestras que eres alguien demasiado especial para mí"
+];
+
+
+// Unimos las razones escritas a mano con las extras.
+const todasLasRazones = [
+  ...handpicked,
+  ...razonesExtra
+];
+
+
+// Mezcla el array para que cada vez aparezcan
+// en un orden diferente.
+function mezclarRazones(array) {
+  const copia = [...array];
+
+  for (let i = copia.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copia[i], copia[j]] = [copia[j], copia[i]];
+  }
+
+  return copia;
+}
+
+
+// Devuelve la cantidad de razones que necesites.
+// Ejemplo: obtenerRazones(20)
+function obtenerRazones(cantidad = 20) {
+  return mezclarRazones(todasLasRazones)
+    .slice(0, Math.min(cantidad, todasLasRazones.length));
+}
+
+const reasons = obtenerRazones(100);
+  // Funciones del Modal
+  function openModal() {
+    const modal = document.getElementById('reasonsModal');
+    buildReasonsNotes();
+    modal.classList.add('open');
+    // Prevenir el scroll del body mientras el modal está abierto
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    const modal = document.getElementById('reasonsModal');
+    modal.classList.remove('open');
+    // Restaurar el scroll
+    document.body.style.overflow = 'auto';
+  }
+
+  function buildReasonsNotes() {
+    const stack = document.getElementById('notesStack');
+    if(stack.dataset.built) return; // Construir solo una vez
+    stack.dataset.built = '1';
+    
+    reasons.forEach((r, i) => {
+      const note = document.createElement('div');
+      note.className = 'note';
+      // Animación en cascada rápida
+      note.style.animationDelay = (i * 0.03) + 's';
+      note.innerHTML = `<b>${i+1}.</b> ${r}`;
+      stack.appendChild(note);
+    });
+  }
+
+  // Cerrar modal al tocar fuera del contenido
+  document.getElementById('reasonsModal').addEventListener('click', function(e) {
+    if(e.target === this) closeModal();
+  });
+
+  // Mostrar regalo
+  function openGift(){
+    document.getElementById('giftIcon').textContent = '💝';
+    document.getElementById('giftReveal').classList.add('show');
+  }
+
+  // Animaciones de entrada (Reveal)
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: .1, rootMargin: "0px 0px -60px 0px" });
+  reveals.forEach(r => observer.observe(r));
+  setTimeout(() => { if(reveals[0]) reveals[0].classList.add('visible'); }, 100);
+
+  // Audio inicial
+  const harvey = document.getElementById('audio-harvey');
+  harvey.volume = 0;
+  window.addEventListener('load', () => {
+    harvey.play().catch(()=>{});
+    let vol = 0;
+    const iv = setInterval(() => { 
+      if(vol < 1) { vol += 0.05; harvey.volume = Math.min(vol, 1); } 
+      else clearInterval(iv); 
+    }, 100);
+  });
+
+  // Escena Final
+  function startClosing(){
+    const scene = document.getElementById('closing-scene');
+    scene.style.opacity = '1';
+    scene.classList.add('open');
+    document.getElementById('closingLine').textContent = 'todo se oscurece...';
+    setTimeout(() => { 
+      document.getElementById('closingLine').style.transition = 'opacity 2s ease'; 
+      document.getElementById('closingLine').style.opacity = '1'; 
+    }, 50);
+    
+    setTimeout(() => {
+      document.getElementById('closingLine').style.opacity = '0';
+      document.getElementById('loneStar').style.transition = 'opacity 1.5s ease';
+      document.getElementById('loneStar').style.opacity = '1';
+    }, 2200);
+    
+    let vol = harvey.volume;
+    const iv = setInterval(() => { 
+      if(vol > 0.05) { vol -= 0.05; harvey.volume = vol; } 
+      else { harvey.volume = 0; clearInterval(iv); } 
+    }, 150);
+  }
+
+  function revealFinalMessage(){
+    document.getElementById('loneStar').style.opacity = '0.15';
+    document.getElementById('loneStar').style.pointerEvents = 'none';
+    document.getElementById('finalMsg').classList.add('show');
+    setTimeout(goToFinalUniverse, 9000);
+  }
+
+  function goToFinalUniverse(){
+    document.body.style.transition = 'opacity 1.2s ease';
+    document.body.style.opacity = '0';
+    let vol = harvey.volume;
+    const iv = setInterval(() => {
+      if(vol > 0.05) { vol -= 0.06; harvey.volume = vol; } 
+      else { harvey.volume = 0; harvey.pause(); clearInterval(iv); }
+    }, 100);
+    setTimeout(() => { window.location.href = 'universo-final/index.html'; }, 1200);
+  }
+</script>
+</body>
+</html>

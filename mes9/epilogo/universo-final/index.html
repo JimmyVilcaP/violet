@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Nuestro Universo</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Playfair+Display:ital,wght@1,600;1,700&family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    height: 100%; width: 100%;
+    overflow: hidden; background-color: #030008;
+    font-family: 'Quicksand', sans-serif;
+    color: #fff; position: relative;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  #space-bg {
+    position: fixed; inset: 0; z-index: 0;
+    background: radial-gradient(ellipse at 50% 45%, #1a0630 0%, #0c0420 40%, #050012 65%, #020005 100%);
+  }
+
+  #dust-layer{
+    position: fixed; inset: -10%; z-index: 1; pointer-events: none;
+    background:
+      radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,.5), transparent),
+      radial-gradient(1px 1px at 70% 65%, rgba(255,255,255,.35), transparent),
+      radial-gradient(1px 1px at 45% 80%, rgba(255,255,255,.4), transparent);
+    background-size: 220px 220px, 300px 300px, 260px 260px;
+    opacity: .5;
+    animation: dustDrift 90s linear infinite;
+  }
+  @keyframes dustDrift{
+    0%{ transform: translate(0,0); }
+    100%{ transform: translate(-120px,-90px); }
+  }
+
+  .nebula{
+    position: fixed; border-radius: 50%;
+    filter: blur(55px); mix-blend-mode: screen; pointer-events: none;
+    animation: nebPulse ease-in-out infinite alternate;
+  }
+  .neb-a{ width:75vw; height:75vw; max-width:640px; max-height:640px; top:-20%; left:-22%;
+    background: radial-gradient(circle, rgba(147,51,234,.55) 0%, rgba(88,28,135,.25) 40%, transparent 70%);
+    animation-duration: 24s; opacity:.75; }
+  .neb-b{ width:70vw; height:70vw; max-width:600px; max-height:600px; bottom:-22%; right:-18%;
+    background: radial-gradient(circle, rgba(236,72,153,.42) 0%, rgba(157,23,77,.2) 40%, transparent 70%);
+    animation-duration: 30s; opacity:.6; }
+  .neb-c{ width:55vw; height:55vw; max-width:480px; max-height:480px; top:20%; right:5%;
+    background: radial-gradient(circle, rgba(56,109,235,.4) 0%, transparent 65%);
+    animation-duration: 34s; opacity:.5; }
+  .neb-d{ width:60vw; height:60vw; max-width:520px; max-height:520px; bottom:5%; left:0%;
+    background: radial-gradient(circle, rgba(168,230,207,.28) 0%, transparent 65%);
+    animation-duration: 38s; opacity:.4; }
+  @keyframes nebPulse{
+    0%{ transform: scale(1) translate(0,0); }
+    100%{ transform: scale(1.14) translate(3%, -3%); }
+  }
+
+  .galaxy-core {
+    position: fixed; top: 50%; left: 50%;
+    width: 130vw; height: 130vw; margin-top: -65vw; margin-left: -65vw;
+    background:
+      radial-gradient(circle, rgba(138,43,226,0.22) 0%, rgba(75,0,130,0.12) 30%, transparent 60%),
+      radial-gradient(ellipse at 40% 60%, rgba(255,105,180,0.10) 0%, transparent 50%),
+      radial-gradient(ellipse at 60% 40%, rgba(0,191,255,0.10) 0%, transparent 50%);
+    filter: blur(50px); mix-blend-mode: screen;
+    animation: galaxyRotate 90s linear infinite;
+    pointer-events: none; z-index: 1;
+  }
+  @keyframes galaxyRotate {
+    0% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(180deg) scale(1.08); }
+    100% { transform: rotate(360deg) scale(1); }
+  }
+
+  #vignette{
+    position: fixed; inset:0; z-index: 6; pointer-events:none;
+    background: radial-gradient(ellipse at center, transparent 40%, rgba(2,0,8,.55) 100%);
+  }
+
+  #star-container { position: fixed; inset: 0; z-index: 2; pointer-events: none; }
+  #constellation-canvas { position: fixed; inset: 0; z-index: 3; pointer-events: none; opacity: 0.55; }
+
+  .star {
+    position: absolute; border-radius: 50%;
+    animation: twinkle infinite alternate;
+  }
+  @keyframes twinkle {
+    0% { opacity: 0.1; transform: scale(0.75); }
+    100% { opacity: 1; transform: scale(1.25); }
+  }
+
+  .shooting-star {
+    position: absolute; z-index: 2;
+    height: 2px; border-radius: 50%;
+    background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(203,182,255,0.4) 60%, rgba(255,255,255,0) 100%);
+    box-shadow: 0 0 12px 2px rgba(230, 200, 255, 0.7);
+    opacity: 0; pointer-events: none;
+  }
+  @keyframes shoot {
+    0% { opacity: 0; transform: translate(0, 0) rotate(45deg) scaleX(0); }
+    8% { opacity: 1; transform: translate(15px, 15px) rotate(45deg) scaleX(1); }
+    100% { opacity: 0; transform: translate(320px, 320px) rotate(45deg) scaleX(0.15); }
+  }
+
+  .center-glow{
+    position: fixed; top:50%; left:50%; transform:translate(-50%,-50%);
+    width: 340px; height: 340px; border-radius:50%; z-index:4; pointer-events:none;
+    background: radial-gradient(circle, rgba(203,182,255,.22) 0%, transparent 70%);
+    filter: blur(20px);
+    animation: coreBreathe 5s ease-in-out infinite;
+  }
+  @keyframes coreBreathe{ 0%,100%{ opacity:.6; transform:translate(-50%,-50%) scale(1);} 50%{ opacity:1; transform:translate(-50%,-50%) scale(1.15);} }
+
+  .center-content {
+    position: fixed; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center; z-index: 5;
+    width: 85%; max-width: 380px;
+    pointer-events: none;
+  }
+  .eyebrow {
+    font-family: 'Cinzel', serif; font-size: 0.7rem;
+    letter-spacing: 4px; text-transform: uppercase; color: #e2d1ff;
+    margin-bottom: 12px; text-shadow: 0 0 15px rgba(203,182,255,0.9);
+    opacity: 0; animation: fadeIn 2s ease 1s forwards;
+  }
+  .title {
+    font-family: 'Playfair Display', serif; font-size: 1.85rem; line-height: 1.35;
+    color: #ffffff;
+    text-shadow: 0 0 20px rgba(187, 134, 252, 0.9), 0 0 40px rgba(138, 43, 226, 0.6);
+    opacity: 0; animation: fadeIn 2s ease 2s forwards;
+  }
+  .hint {
+    position: fixed; bottom: 4%; left: 50%; transform: translateX(-50%);
+    font-size: 0.65rem; letter-spacing: 1px; color: #a89bbd;
+    opacity: 0; z-index: 5; animation: fadeIn 2s ease 4s forwards;
+    white-space: nowrap; text-align:center;
+  }
+  @keyframes fadeIn { to { opacity: 1; } }
+
+  #phrase-container { position: fixed; inset: 0; z-index: 4; }
+
+  .phrase {
+    position: absolute; font-size: 0.65rem;
+    text-align: center; white-space: nowrap;
+    color: #f3ecff; text-shadow: 0 0 8px rgba(203,182,255,0.8);
+    cursor: pointer; pointer-events: auto;
+    transform: translate(-50%, -50%);
+    transition: text-shadow .4s ease, transform .4s ease, color .4s ease;
+    animation: float 6s ease-in-out infinite;
+  }
+  .phrase::before {
+    content: '✦'; display: block; font-size: 0.5rem; color: #fff;
+    margin-bottom: 3px; text-shadow: 0 0 10px #fff;
+    animation: twinkle 3s infinite alternate;
+  }
+  @keyframes float {
+    0%, 100% { transform: translate(-50%, -50%); }
+    50% { transform: translate(-50%, calc(-50% - 6px)); }
+  }
+  .phrase.active {
+    color: #ffffff;
+    text-shadow: 0 0 15px #fff, 0 0 30px #d8b4fe, 0 0 45px #a855f7;
+    transform: translate(-50%, -50%) scale(1.25) !important;
+    z-index: 10;
+  }
+
+  .burst{
+    position:absolute; width:6px; height:6px; border-radius:50%;
+    background: radial-gradient(circle, #fff, rgba(216,180,254,0));
+    pointer-events:none; z-index:9; transform:translate(-50%,-50%);
+    animation: burstGrow .9s ease-out forwards;
+  }
+  @keyframes burstGrow{
+    0%{ width:6px; height:6px; opacity:1; }
+    100%{ width:70px; height:70px; opacity:0; }
+  }
+
+  #tap-audio{
+    position: fixed; bottom: 1.4rem; left: 50%; transform: translateX(-50%);
+    z-index: 8; font-size: .62rem; letter-spacing: 1px; color: #cbb6ff;
+    border: 1px solid rgba(203,182,255,.4); border-radius: 999px;
+    padding: .5rem 1.1rem; background: rgba(20,10,35,.4); backdrop-filter: blur(4px);
+    opacity: 0; pointer-events: none; transition: opacity .5s ease;
+  }
+  #tap-audio.show{ opacity:1; pointer-events:auto; cursor:pointer; }
+
+  @media (min-width: 768px) {
+    .title { font-size: 2.5rem; }
+    .eyebrow { font-size: 0.9rem; }
+    .phrase { font-size: 0.8rem; }
+    .hint { font-size: 0.8rem; }
+    .phrase::before { font-size: 0.65rem; }
+  }
+</style>
+</head>
+<body>
+
+<div id="space-bg"></div>
+<div class="nebula neb-a"></div>
+<div class="nebula neb-b"></div>
+<div class="nebula neb-c"></div>
+<div class="nebula neb-d"></div>
+<div class="galaxy-core"></div>
+<div id="dust-layer"></div>
+<canvas id="constellation-canvas"></canvas>
+<div id="star-container"></div>
+<div id="phrase-container"></div>
+<div id="vignette"></div>
+
+<div class="center-glow"></div>
+<div class="center-content">
+  <div class="eyebrow">Nuestro Universo</div>
+  <div class="title">fin de este capítulo,<br>no de nosotros 🤍</div>
+</div>
+<div class="hint">toca una estrella para iluminarla</div>
+<div id="tap-audio">toca para reproducir la música ♪</div>
+
+<audio id="audio-fin" src="/musica/fin.mp3" preload="auto" loop></audio>
+
+<script>
+  const starContainer = document.getElementById('star-container');
+  const isMobile = window.innerWidth < 768;
+  const numStars = isMobile ? 150 : 280;
+
+  const starTints = [
+    'rgba(255,255,255,1)',
+    'rgba(226,209,255,1)',
+    'rgba(200,220,255,1)',
+    'rgba(255,236,210,1)'
+  ];
+
+  for (let i = 0; i < numStars; i++) {
+    let star = document.createElement('div');
+    star.className = 'star';
+
+    let size = Math.random() < 0.8 ? Math.random() * 1.6 + 0.5 : Math.random() * 2.6 + 1.2;
+    const tint = starTints[Math.floor(Math.random()*starTints.length)];
+    star.style.width = size + 'px';
+    star.style.height = size + 'px';
+    star.style.background = tint;
+    star.style.boxShadow = `0 0 ${size*4}px ${size*0.6}px ${tint.replace('1)', '0.6)')}`;
+
+    star.style.left = Math.random() * 100 + 'vw';
+    star.style.top = Math.random() * 100 + 'vh';
+
+    star.style.animationDuration = (Math.random() * 3 + 1.5) + 's';
+    star.style.animationDelay = (Math.random() * 5) + 's';
+    star.style.opacity = Math.random();
+
+    starContainer.appendChild(star);
+  }
+
+  function createShootingStar() {
+    let star = document.createElement('div');
+    star.className = 'shooting-star';
+
+    let startX = Math.random() * window.innerWidth;
+    let startY = Math.random() * (window.innerHeight / 3);
+    const len = 70 + Math.random()*60;
+
+    star.style.left = startX + 'px';
+    star.style.top = startY + 'px';
+    star.style.width = len + 'px';
+
+    star.style.animation = `shoot ${Math.random() * 1 + 1.2}s cubic-bezier(0.4, 0, 1, 1) forwards`;
+
+    starContainer.appendChild(star);
+    setTimeout(() => { star.remove(); }, 2500);
+  }
+
+setInterval(() => { if(Math.random() > 0.10) createShootingStar(); }, 1000);
+setTimeout(createShootingStar, 600);
+
+  const phrases = [
+    "gracias por existir", "mi persona favorita", "9 meses y contando",
+    "te amo en todos los universos", "fuiste, eres y serás", "mi lugar seguro",
+    "gracias por quedarte", "contigo el tiempo vuela", "esto recién comienza",
+    "te elijo, otra vez", "cada 25 es nuestro", "universos enteros por ti",
+    "mi favorita, sin duda", "hasta la luna y más", "te quiero muchísimo",
+    "mi calma, mi risa", "aunque pase el tiempo", "nuestra tradición",
+    "mi 25 eres tú", "seguimos, siempre", "de aquí al universo"
+  ];
+
+  const phraseContainer = document.getElementById('phrase-container');
+  const coords = [];
+
+  function isValidPosition(x, y) {
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+
+    const excludeWidth = isMobile ? vw * 0.78 : 420;
+    const excludeHeight = isMobile ? 190 : 260;
+    const cx = vw / 2;
+    const cy = vh / 2;
+
+    if (Math.abs(x - cx) < excludeWidth / 2 && Math.abs(y - cy) < excludeHeight / 2) return false;
+
+    const minDist = isMobile ? 62 : 130;
+    for (let c of coords) {
+      const dist = Math.hypot(c.x - x, c.y - y);
+      if (dist < minDist) return false;
+    }
+    return true;
+  }
+
+  phrases.forEach((text) => {
+    let el = document.createElement('div');
+    el.className = 'phrase';
+    el.innerHTML = text;
+
+    let attempts = 0, x, y, placed = false;
+    while (attempts < 300) {
+      x = (Math.random() * 0.9 + 0.05) * window.innerWidth;
+      y = (Math.random() * 0.85 + 0.05) * window.innerHeight;
+      if (isValidPosition(x, y)) { placed = true; break; }
+      attempts++;
+    }
+    if (!placed) {
+      x = Math.random() < 0.5 ? (Math.random() * 0.2) * window.innerWidth : (Math.random() * 0.2 + 0.8) * window.innerWidth;
+      y = Math.random() < 0.5 ? (Math.random() * 0.2) * window.innerHeight : (Math.random() * 0.2 + 0.8) * window.innerHeight;
+    }
+
+    coords.push({x, y});
+    el.style.left = x + 'px';
+    el.style.top = y + 'px';
+    el.style.animationDelay = (Math.random() * -5) + 's';
+
+    el.addEventListener('click', () => {
+      el.classList.add('active');
+      const b = document.createElement('div');
+      b.className = 'burst';
+      b.style.left = x + 'px';
+      b.style.top = y + 'px';
+      phraseContainer.appendChild(b);
+      setTimeout(()=> b.remove(), 900);
+      setTimeout(() => { el.classList.remove('active'); }, 1500);
+    });
+
+    phraseContainer.appendChild(el);
+  });
+
+  const canvas = document.getElementById('constellation-canvas');
+  const ctx = canvas.getContext('2d');
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    drawConstellations();
+  }
+
+  function drawConstellations() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const connectDist = isMobile ? window.innerWidth * 0.6 : window.innerWidth * 0.3;
+
+    for (let i = 0; i < coords.length; i++) {
+      let connections = 0;
+      for (let j = i + 1; j < coords.length; j++) {
+        let dist = Math.hypot(coords[i].x - coords[j].x, coords[i].y - coords[j].y);
+        if (dist < connectDist && connections < 2) {
+          const grad = ctx.createLinearGradient(coords[i].x, coords[i].y, coords[j].x, coords[j].y);
+          grad.addColorStop(0, 'rgba(203,182,255,0.5)');
+          grad.addColorStop(1, 'rgba(203,182,255,0.05)');
+          ctx.strokeStyle = grad;
+          ctx.lineWidth = 0.6;
+          ctx.beginPath();
+          ctx.moveTo(coords[i].x, coords[i].y - 10);
+          ctx.lineTo(coords[j].x, coords[j].y - 10);
+          ctx.stroke();
+          connections++;
+        }
+      }
+    }
+  }
+
+  window.addEventListener('resize', resizeCanvas);
+  setTimeout(resizeCanvas, 150);
+
+  const audioFin = document.getElementById('audio-fin');
+  const tapAudio = document.getElementById('tap-audio');
+  audioFin.volume = 0;
+
+  function fadeInAudio(){
+    let v = 0;
+    const fade = setInterval(() => {
+      if (v < 1) { v += 0.04; audioFin.volume = Math.min(v, 1); }
+      else clearInterval(fade);
+    }, 130);
+  }
+
+  audioFin.play().then(fadeInAudio).catch(()=>{
+    tapAudio.classList.add('show');
+  });
+
+  tapAudio.addEventListener('click', () => {
+    audioFin.play().then(()=>{
+      fadeInAudio();
+      tapAudio.classList.remove('show');
+    }).catch(()=>{});
+  });
+</script>
+</body>
+</html>
